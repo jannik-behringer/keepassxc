@@ -1013,6 +1013,7 @@ void DatabaseWidget::switchToMainView(bool previousDialogAccepted)
             m_newEntry->setGroup(m_newParent);
             m_entryView->setFocus();
             m_entryView->setCurrentEntry(m_newEntry.take());
+            static_cast<TagModel*>(m_tagView->model())->findTags();
         } else {
             m_newEntry.reset();
         }
@@ -1025,6 +1026,9 @@ void DatabaseWidget::switchToMainView(bool previousDialogAccepted)
 
     if (sender() == m_entryView || sender() == m_editEntryWidget) {
         onEntryChanged(m_entryView->currentEntry());
+        if (previousDialogAccepted) {
+            static_cast<TagModel*>(m_tagView->model())->findTags();
+        }
     } else if (sender() == m_groupView || sender() == m_editGroupWidget) {
         onGroupChanged();
     }
